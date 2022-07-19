@@ -102,9 +102,10 @@ class ProfileFrame(tk.Frame):
         ttk.Label(self, text="Profile Name").grid(column=0, row=0, sticky=tk.W)
         self.profile_name_variable = tk.StringVar()
         self.profile_name_variable.set(self.profile["name"])
-        self.profile_name = ttk.Entry(self, width=30, textvariable=self.profile_name_variable, takefocus=0)
+        self.profile_name = ttk.Entry(self, width=60, textvariable=self.profile_name_variable, takefocus=0)
         self.profile_name.bind("<Return>", self.on_profile_name_changed)
         self.profile_name.grid(column=1, row=0, sticky=tk.W)
+        ttk.Button(self, text="Merge", width=7, command=self.merge_current_profile).grid(column=2, row=0)
 
         ttk.Label(self, text="Directory").grid(column=0, row=1, sticky=tk.W)
         self.source_directory_variable = tk.StringVar()
@@ -114,14 +115,14 @@ class ProfileFrame(tk.Frame):
             textvariable=self.source_directory_variable, takefocus=0
         )
         self.source_directory.grid(column=1, row=1)
-        ttk.Button(self, text="...", width=5, command=self.ask_directory).grid(column=2, row=1)
+        ttk.Button(self, text="...", width=7, command=self.ask_directory).grid(column=2, row=1)
 
         ttk.Label(self, text="Output File").grid(column=0, row=2, sticky=tk.W)
         self.target_variable = tk.StringVar()
         self.target_variable.set(self.profile["target_file_name"])
         self.target = ttk.Entry(self, width=60, state="readonly", textvariable=self.target_variable, takefocus=0)
         self.target.grid(column=1, row=2)
-        ttk.Button(self, text="...", width=5, command=self.ask_save_file).grid(column=2, row=2)
+        ttk.Button(self, text="...", width=7, command=self.ask_save_file).grid(column=2, row=2)
 
         ttk.Label(self, text="Prefix").grid(column=0, row=3, sticky=tk.W)
         self.prefix = ScrolledText(self, height=3, takefocus=0)
@@ -160,6 +161,9 @@ class ProfileFrame(tk.Frame):
             rel_path = os.path.relpath(selected_file_name, os.getcwd())
             self.target_variable.set(rel_path)
             self.profile["target_file_name"] = rel_path
+
+    def merge_current_profile(self):
+        merge_profile(self.profile)
 
     def on_profile_name_changed(self, _):
         new_profile_name = self.profile_name.get()

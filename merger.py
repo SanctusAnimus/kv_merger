@@ -13,9 +13,6 @@ def merge_profile(profile: dict):
     if not src.exists():
         # print("source in merge does not exist")
         return
-    if not target.exists():
-        # print("target in merge does not exist")
-        return
     read_content = [profile["prefix"], ]
     for root, dirs, files in walk(src):
         for file_name in files:
