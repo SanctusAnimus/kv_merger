@@ -43,7 +43,7 @@ class Window:
         # self.on_active_profile_changed()
 
     def on_shutdown(self):
-        with open("_profiles.json", "w") as target:
+        with open("_profiles.json", "w", encoding="utf-8") as target:
             dump(self.profiles or [], target)
         self.observer.stop()
         self.observer.join()
@@ -89,7 +89,7 @@ class Window:
         path = Path("_profiles.json")
         if not path.exists():
             return []
-        with open(path, 'rt') as profiles_src:
+        with open(path, 'rt', encoding="utf-8") as profiles_src:
             return load(profiles_src)
 
 

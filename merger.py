@@ -16,8 +16,11 @@ def merge_profile(profile: dict):
     read_content = [profile["prefix"], ]
     for root, dirs, files in walk(src):
         for file_name in files:
+            if file_name.endswith("~"):
+                continue
             open_path = path.join(root, file_name)
-            with open(open_path, 'r') as src:
+            # print(root, file_name, open_path)
+            with open(open_path, 'r', encoding="utf-8") as src:
                 content = src.read().strip()
                 read_content.append(
                     f"//--------------------------------------------------------------------\n"
@@ -29,5 +32,6 @@ def merge_profile(profile: dict):
                     f"//--------------------------------------------------------------------\n\n"
                 )
     read_content.append(f"\n{profile['postfix']}\n\n")
-    with open(target, "w") as target_file:
+    Path(target).parent.mkdir(parents=True, exist_ok=True)
+    with open(target, "w", encoding="utf-8") as target_file:
         target_file.writelines(read_content)
